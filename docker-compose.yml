@@ -28,7 +28,7 @@ services:
     extra_hosts:
         - "datanode1:172.28.0.3"
         - "datanode2:172.28.0.4"
-        - "datanode2:172.28.0.5"
+        - "datanode3:172.28.0.5"
 
   datanode1:
     image: hadoop-spark:latest
@@ -45,7 +45,7 @@ services:
     extra_hosts:
         - "namenode:172.28.0.2"
         - "datanode2:172.28.0.4"
-        - "datanode2:172.28.0.5"
+        - "datanode3:172.28.0.5"
 
   datanode2:
     image: hadoop-spark:latest
@@ -62,7 +62,7 @@ services:
     extra_hosts:
         - "namenode:172.28.0.2"
         - "datanode1:172.28.0.3"
-        - "datanode2:172.28.0.5"
+        - "datanode3:172.28.0.5"
 
   datanode3:
     image: hadoop-spark:latest
@@ -79,4 +79,4 @@ services:
     extra_hosts:
         - "namenode:172.28.0.2"
         - "datanode1:172.28.0.3"
-        - "datanode1:172.28.0.4"
+        - "datanode2:172.28.0.4"
