@@ -1,27 +1,23 @@
 import matplotlib.pyplot as plt
-import numpy as np
-import sys
+import csv
 
-result=[]
-cpt=0
-# input comes from STDIN
-for line in sys.stdin:
-    niveau, formation, filiere, inscrit = line.split(',')
-    result.append((filiere, int(inscrit)))
-    print(cpt, niveau, formation, filiere)
-    cpt= cpt +1
-  
-print(result)
-plt.rcdefaults()
-fig, ax = plt.subplots(figsize=(100,50))
-# Example data
-header = tuple(i[0] for i in result)
-y_pos = np.arange(len(header))
-error = 0
-ax.barh(y_pos, tuple(i[1] for i in result), xerr=error, align='center')
-plt.subplots_adjust(left=0.306)
-ax.set_yticks(y_pos, labels=header)
-ax.invert_yaxis()  # labels read top-to-bottom
-ax.set_xlabel('Nbr inscrits')
-ax.set_title('Filières les plus demandées:')
+dep_data = []
+
+with open('parcoursup.csv', newline='') as csvfile:
+    reader = csv.DictReader(csvfile, delimiter=';')
+    for row in reader:
+        try:
+            dep = int(row['dep'])
+            dep_data.append(dep)
+        except ValueError:
+            print("Ignoring line {}: invalid value for dep".format(reader.line_num))
+
+plt.hist(dep_data, bins=50, color='blue', alpha=0.7)
+plt.xlabel('Département')
+plt.ylabel('Nombre de candidats')
+plt.title('Répartition des candidats par département')
+plt.grid(True)
+
+plt.savefig('output.png')
+
 plt.show()
