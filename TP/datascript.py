@@ -3,7 +3,7 @@ import csv
 
 dep_data = []
 
-with open('parcoursup.csv', newline='') as csvfile:
+with open('fr-insersup-insertion-pro-post-diplome.csv', newline='') as csvfile:
     reader = csv.DictReader(csvfile, delimiter=';')
     for row in reader:
         try:
