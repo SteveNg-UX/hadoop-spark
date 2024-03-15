@@ -1,5 +1,6 @@
 import csv
 import matplotlib.pyplot as plt
+import numpy as np
 
 u = []
 v = []
@@ -8,32 +9,42 @@ x = []
 y = []
 z = []
 
-with open('csv/series_offres_difusees-Contrat.csv', 'r') as data:
-    plots = csv.DictReader(data, delimiter=',')
-    for col in plots:
-        if col['Année'] == '2023':
-            u.append(col["Mois"])
-            v.append(col["CDI"])
-            w.append(col["CDD de plus de 6 mois"])
-            x.append(col["CDD de 1 à 6 mois"])
-            y.append(col["CDD de moins d'un mois"])
-            z.append(col["Autres contrats (intérim, saisonniers, ...)"])
+with open('csv/series_offres_diffusees-Contrats.csv', 'r') as data:
+	plots = csv.DictReader(data, delimiter=',')
+	for col in plots:
+		if col['Année'] == '2023':
+			u.append(col["Mois"])
+			v.append(col["CDI"])
+			w.append(col["CDD de plus de 6 mois"])
+			x.append(col["CDD de 1 à 6 mois"])
+			y.append(col["CDD de moins d'un mois"])
+			z.append(col["Autres contrats (intérim, saisonniers, ...)"])
 
-bar_width = 0.15
+penguin_means = {
+    'CDI': v,
+    'CDD de plus de 6 mois': w,
+    'CDD de 1 à 6 mois': x,
+    'CDD de moins d\'un mois': y,
+    'Autres contrats (intérim, saisonniers, ...)': z,
+}
 
-positions = range(len(u))
+i = np.arange(len(u))
+width = 0.25
+multiplier = 0
 
-plt.figure(figsize=(10, 6))
-plt.bar(positions, v, label='CDI', color='b', width=bar_width)
-plt.bar([p + bar_width for p in positions], w, label='CDD > 6 mois', color='g', width=bar_width)
-plt.bar([p + 2 * bar_width for p in positions], x, label='CDD 1 à 6 mois', color='r', width=bar_width)
-plt.bar([p + 3 * bar_width for p in positions], y, label='CDD < 1 mois', color='y', width=bar_width)
-plt.bar([p + 4 * bar_width for p in positions], z, label='Autres contrats', color='m', width=bar_width)
+#fig, ax = plt.subplots(layout='constrained')
+fig, ax = plt.subplots()
 
-plt.xlabel('Mois')
-plt.ylabel("Nombre d'emplois")
-plt.title('Emplois diffusés par mois en fonction des contrats')
-plt.xticks([p + 2 * bar_width for p in positions], u)  # Afficher uniquement certains mois
-plt.legend()
-plt.tight_layout()
-plt.savefig('graph-output/output.png')
+for attribute, measurement in penguin_means.items():
+    offset = width * multiplier
+    rects = ax.bar(i + offset, measurement, width, label=attribute)
+    ax.bar_label(rects, padding=3)
+    multiplier += 1
+
+ax.set_ylabel('Length (mm)')
+ax.set_title("Nombre d'offre d'emploie par type de contrat")
+ax.set_xticks(i + width, u)
+ax.legend(loc='upper left', ncols=3)
+ax.set_ylim(0, 50)
+
+plt.savefig('graph/output.png')
