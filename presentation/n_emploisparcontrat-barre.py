@@ -29,7 +29,7 @@ penguin_means = {
 }
 
 i = np.arange(len(u))
-width = 0.25
+width = 0.15
 multiplier = 0
 
 #fig, ax = plt.subplots(layout='constrained')
@@ -41,10 +41,10 @@ for attribute, measurement in penguin_means.items():
     ax.bar_label(rects, padding=3)
     multiplier += 1
 
-ax.set_ylabel('Length (mm)')
+ax.set_ylabel("Offres d'emploi")
 ax.set_title("Nombre d'offre d'emploie par type de contrat")
 ax.set_xticks(i + width, u)
 ax.legend(loc='upper left', ncols=3)
-ax.set_ylim(0, 50)
+ax.set_ylim(0, 55)
 
 plt.savefig('graph/output.png')
